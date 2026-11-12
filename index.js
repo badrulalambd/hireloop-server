@@ -49,6 +49,12 @@ app.post('/jobs', async (req, res) => {
   res.send(result);
   console.log(result);
 })
+app.get('/jobs', async (req, res) => {
+  const cursor = jobCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+  console.log("Get Jobs Data from mongoDB: ", result);
+})
 
 app.listen(port, () => {
   console.log(`HireLoop server listening on port ${port}`);
