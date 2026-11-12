@@ -27,8 +27,8 @@ export async function disconnectFromMongoDB() {
 
 const connection = await connectToMongoDB();
 const database = connection.db("hireloopdb");
-const users = database.collection("user");
-const jobs = database.collection("jobs");
+const userCollection = database.collection("user");
+const jobCollection = database.collection("jobs");
 
 app.get('/', (req, res) => {
   res.send('HireLoop server is running!');
@@ -37,9 +37,17 @@ app.get('/', (req, res) => {
 
 //GET API
 app.get('/users', async (req, res) => {
-    const result = await users.find({}).toArray();
+    const result = await userCollection.find({}).toArray();
     console.log(result);
     res.send(result);
+})
+
+//Job-related API
+app.post('/jobs', async (req, res) => {
+  const jobsData = req.body;
+  const result = await jobCollection.insertOne(jobsData);
+  res.send(result);
+  console.log(result);
 })
 
 app.listen(port, () => {
