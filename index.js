@@ -84,6 +84,8 @@ app.get('/browse-jobs', async (req, res) => {
       query.$or = [
         { jobTitle: searchRegex },
         { responsibilities: searchRegex },
+        { companyName: searchRegex },
+        { jobType: searchRegex },
         { qualifications: searchRegex }
       ];
     }
