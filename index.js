@@ -57,6 +57,19 @@ app.get('/jobs', async (req, res) => {
   res.send(result);
   console.log("Get Jobs Data from mongoDB: ", result);
 })
+//API for job-details page to fetch a single job by its id
+app.get('/jobs/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    return res.status(404).send({ message: "Job not found" });
+  }
+  const result = await jobCollection.findOne({ _id: new ObjectId(id) });
+  if (!result) {
+    return res.status(404).send({ message: "Job not found" });
+  }
+  res.send(result);
+  console.log("Get Single Job Data from mongoDB: ", result);
+})
 //API for browse-jobs page to find the jobs on the public page
 app.get('/browse-jobs', async (req, res) => {
   const query = {};
