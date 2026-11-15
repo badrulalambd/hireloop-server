@@ -125,6 +125,19 @@ app.post('/application', async (req, res) => {
   res.send(result);
   console.log(result);
 })
+app.get('/applications', async (req, res) => {
+
+  const query = {};
+
+  if(req.query.applicantId){
+    query.userId = req.query.applicantId;
+  }
+
+  const cursor = applicationCollection.find(query);
+  const result = await cursor.toArray();
+  res.send(result);
+  console.log("Get Applications Data from mongoDB: ", result);
+})
 
 app.listen(port, () => {
   console.log(`HireLoop server listening on port ${port}`);
