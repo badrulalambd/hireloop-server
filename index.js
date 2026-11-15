@@ -29,12 +29,14 @@ const connection = await connectToMongoDB();
 const database = connection.db("hireloopdb");
 const userCollection = database.collection("user");
 const jobCollection = database.collection("jobs");
+const applicationCollection = database.collection("applications");
 
 app.get('/', (req, res) => {
   res.send('HireLoop server is running!');
   console.log(`Hireloop server is running on port: ${port}`)
 });
 
+//Users-Related API............................................................
 //GET API
 app.get('/users', async (req, res) => {
   const result = await userCollection.find({}).toArray();
@@ -42,7 +44,7 @@ app.get('/users', async (req, res) => {
   res.send(result);
 })
 
-//Job-Related API
+//Job-Related API................................................................
 //API for the add-job page
 app.post('/jobs', async (req, res) => {
   const jobsData = req.body;
@@ -114,6 +116,14 @@ app.delete('/jobs/:id', async (req, res) => {
   const result = await jobCollection.deleteOne(query);
   res.send(result);
   console.log("Deleted Job: ", result);
+})
+
+//Application-Related API...................................................
+app.post('/application', async (req, res) => {
+  const application = req.body;
+  const result = await applicationCollection.insertOne(application);
+  res.send(result);
+  console.log(result);
 })
 
 app.listen(port, () => {
